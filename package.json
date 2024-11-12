@@ -1,0 +1,21 @@
+{
+  "name": "rudo_ai_poc",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^0.0.70",
+    "@pinecone-database/pinecone": "^4.0.0",
+    "@prisma/adapter-d1": "^5.21.1",
+    "@prisma/client": "5.21.1",
+    "ai": "^3.4.23",
+    "hono": "^4.6.7",
+    "openai": "^4.68.4",
+    "prisma": "^5.21.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "wrangler": "^3.84.1"
+  }
+}

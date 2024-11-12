@@ -1,0 +1,59 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model tbl_auth_user {
+  id                 Int                @id @default(autoincrement())
+  user_id            String             @unique @default(uuid())
+  username           String?            @unique
+  email              String?            @unique
+  role               String             @default("USER")
+  profile            tbl_user_profile[]
+  chat               tbl_user_chat[]
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt
+  tbl_user_profileId Int
+  conversations      tbl_conversation[]
+}
+
+model tbl_user_profile {
+  id         Int           @id @default(autoincrement())
+  first_name String
+  last_name  String?
+  thumbnail  String?
+  bio        String?
+  user_id    String        @unique
+  user       tbl_auth_user @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt
+}
+
+model tbl_user_chat {
+  id            Int                @id @default(autoincrement())
+  chat_id       String             @unique @default(uuid())
+  user_id       String
+  user          tbl_auth_user      @relation(fields: [user_id], references: [user_id])
+  conversations tbl_conversation[]
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt
+}
+
+model tbl_conversation {
+  id              Int           @id @default(autoincrement())
+  conversation_id String        @unique @default(uuid())
+  chat_id         String
+  user_id         String
+  questions       String?
+  answer          String
+  files           String // array of strings will be there
+  user            tbl_auth_user @relation(fields: [user_id], references: [user_id])
+  chat            tbl_user_chat @relation(fields: [chat_id], references: [chat_id])
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt
+}
